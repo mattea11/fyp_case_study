@@ -1,4 +1,5 @@
 # curiosity_mars_rover_ws software package
+Note: this was taken from Mark Gatland’s implementation I will be adding a rosbridge to allow communication with a java monitor I will be implementing
 ROS simulation of the Mars rover Curiosity with a web-based user interface
 
 ![Screenshot of MarsViz interface](https://i.imgur.com/sSvI0MY.png)

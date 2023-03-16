@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import os
+import sys
+import subprocess
 import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan
@@ -19,6 +22,17 @@ class ObstacleService(object):
         self.frontBlocked = False
         self.backBlocked = False
         self.wait_publishers_to_be_ready()
+
+        # for i in range(10):
+        #     subprocess.run(['grep', 'q'], input='hello world\n', capture_output=True)
+        # subprocess.run(['grep', 'i'], input='hello world\n', capture_output=True)
+        # try :
+        #     with open('/home/mattea/curiosity_mars_rover_ws/src/curiosity_mars_rover_navigation/scripts/move_rover.txt', 'r') as path_to_take:
+        #         for command in path_to_take:
+        #             print(command)
+        # except FileNotFoundError:
+        #     print("Error: file not found!")
+        #     sys.exit(1)
 
     def teleop_obstacle(self, req):
         response = TeleopResponse()

@@ -39,7 +39,7 @@ def main(argv):
         metavar='STRING')
     args = parser.parse_args() # maybe in the future we will need more arguments, for now it's just one
 
-    with open(args.config_file, 'r') as stream: # open the config file for the generator
+    with open('./src/monitor_generator/'+args.config_file, 'r') as stream: # open the config file for the generator
         try:
             config = yaml.safe_load(stream) # load the config file
             nodes = {}

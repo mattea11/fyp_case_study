@@ -6,14 +6,14 @@ import yaml
 import websocket
 from threading import *
 from rospy_message_converter import message_converter
-from monitor.msg import *
+from ros_monitoring.msg import *
 from std_msgs.msg import String
 
 ws_lock = Lock()
 dict_msgs = {}
-from std_msgs.msg import String
+from tf2_msgs.msg import TFMessage
 
-pubtf = rospy.Publisher(name = 'tf', data_class = String, latch = True, queue_size = 1000)
+pubtf = rospy.Publisher(name = 'tf', data_class = TFMessage, latch = True, queue_size = 1000)
 def callbacktf(data):
 	global ws, ws_lock
 	rospy.loginfo('monitor has observed: ' + str(data))
@@ -28,7 +28,7 @@ def callbacktf(data):
 	ws_lock.release()
 	rospy.loginfo('event propagated to oracle')
 pub_dict = { 'tf' : pubtf}
-msg_dict = { 'tf' : "std_msgs/String"}
+msg_dict = { 'tf' : "tf2_msgs/TFMessag/tf2_msgs/TFMessage"}
 def monitor():
 	global pub_error, pub_verdict
 	with open(log, 'w') as log_file:
@@ -36,9 +36,11 @@ def monitor():
 	rospy.init_node('obsticle_dist', anonymous=True)
 	pub_error = rospy.Publisher(name = 'obsticle_dist/monitor_error', data_class = MonitorError, latch = True, queue_size = 1000)
 	pub_verdict = rospy.Publisher(name = 'obsticle_dist/monitor_verdict', data_class = String, latch = True, queue_size = 1000)
-	rospy.Subscriber('tf_mon', String, callbacktf)
+	rospy.Subscriber('tf_mon', TFMessage, callbacktf)
 	rospy.loginfo('monitor started and ready')
+
 def on_message(ws, message):
+	rospy.loginfo('is this working?')
 	global error, log, actions
 	json_dict = json.loads(message)
 	if json_dict['verdict'] == 'true' or json_dict['verdict'] == 'currently_true' or json_dict['verdict'] == 'unknown':
@@ -87,6 +89,7 @@ def on_open(ws):
 	rospy.loginfo('### websocket is open ###')
 
 def logging(json_dict):
+	rospy.loginfo('hello????')
 	try:
 		with open(log, 'a+') as log_file:
 			log_file.write(json.dumps(json_dict) + '\n')
@@ -96,7 +99,8 @@ def logging(json_dict):
 
 def main(argv):
 	global log, actions, ws
-	log = 'home/user/curiosity_mars_rover_ws/log_files/obsticle_dist.txt' 
+	i = 0
+	log = 'log_files/obsticle_dist.txt' 
 	actions = {
 		'tf' : ('filter', 1)
 	}
@@ -109,7 +113,10 @@ def main(argv):
 		on_error = on_error,
 		on_close = on_close,
 		on_open = on_open)
+	print(i)
+	i += 1
 	ws.run_forever()
+	
 
 if __name__ == '__main__':
 	main(sys.argv)

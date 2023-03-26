@@ -27,7 +27,7 @@ class ObstacleService(object):
         #     subprocess.run(['grep', 'q'], input='hello world\n', capture_output=True)
         # subprocess.run(['grep', 'i'], input='hello world\n', capture_output=True)
         # try :
-        #     with open('/home/mattea/curiosity_mars_rover_ws/src/curiosity_mars_rover_navigation/scripts/move_rover.txt', 'r') as path_to_take:
+        #     with open('/home/user/curiosity_mars_rover_ws/src/curiosity_mars_rover_navigation/scripts/move_rover.txt', 'r') as path_to_take:
         #         for command in path_to_take:
         #             print(command)
         # except FileNotFoundError:

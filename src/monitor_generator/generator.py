@@ -26,11 +26,11 @@ import xml.etree.ElementTree as ET
 
 def create_monitor(monitor_id, topics_with_types_and_action, log, url, port, oracle_action, silent, warning): # function which creates the python ROS monitor
     #  ../monitor/src/
-    with open('../ros_monitoring/src/' + monitor_id + '.py', 'w') as monitor: # the monitor code will be in monitor.py
+    with open('./src/ros_monitoring/src/' + monitor_id + '.py', 'w') as monitor: # the monitor code will be in monitor.py
     # write the imports the monitor is gonna need
         imports = '''#!/usr/bin/env python3\nimport rospy\nimport sys'''
         imports += '''\nimport json\nimport yaml\nimport websocket'''
-        imports += '''\nfrom threading import *\nfrom rospy_message_converter import message_converter\nfrom monitor.msg import *'''
+        imports += '''\nfrom threading import *\nfrom rospy_message_converter import message_converter\nfrom ros_monitoring.msg import *'''
         imports += '''\nfrom std_msgs.msg import String\n\nws_lock = Lock()'''
         if oracle_action == 'nothing':
             imports += '''\ndict_msgs = {}'''
@@ -188,7 +188,7 @@ def create_monitor(monitor_id, topics_with_types_and_action, log, url, port, ora
 
 def create_launch_file(monitor_ids):
     # ../monitor/run.launch
-    with open('../ros_monitoring/monitor.launch', 'w') as launch_file:
+    with open('./src/ros_monitoring/monitor.launch', 'w') as launch_file:
         str = '''
 <launch>
         '''
@@ -211,7 +211,11 @@ def instrument_launch_files(nodes):
             launch_files[path] = []
         launch_files[path].append((name, package, topics))
     for path in launch_files:
+        print("THE PATH: ", path)
+        # path = '/home/mattea/curiosity_mars_rover_ws/src/curiosity_mars_rover_gazebo/launch/main_mars_terrain.launch'
+        # print("THE aletered PATH: ", path)
         file_name = path.replace('.launch', '_instrumented.launch')
+
         tree = ET.parse(path)
         launch = tree.getroot()
         for node in launch.findall('node'):

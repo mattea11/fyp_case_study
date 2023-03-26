@@ -28,6 +28,8 @@ from geometry_msgs.msg import PoseStamped
 from move_base_msgs.msg import MoveBaseActionResult
 from tf.transformations import *
 
+# ./src/ros_monitoring/src/obsticle_dist.py
+
 class NavigationPublishAndWait:
     def __init__(self):
         self.pub = rospy.Publisher('/move_base_simple/goal', PoseStamped, queue_size=10)

@@ -38,9 +38,7 @@ def monitor():
 	pub_verdict = rospy.Publisher(name = 'obsticle_dist/monitor_verdict', data_class = String, latch = True, queue_size = 1000)
 	rospy.Subscriber('tf_mon', TFMessage, callbacktf)
 	rospy.loginfo('monitor started and ready')
-
 def on_message(ws, message):
-	rospy.loginfo('is this working?')
 	global error, log, actions
 	json_dict = json.loads(message)
 	if json_dict['verdict'] == 'true' or json_dict['verdict'] == 'currently_true' or json_dict['verdict'] == 'unknown':
@@ -89,7 +87,6 @@ def on_open(ws):
 	rospy.loginfo('### websocket is open ###')
 
 def logging(json_dict):
-	rospy.loginfo('hello????')
 	try:
 		with open(log, 'a+') as log_file:
 			log_file.write(json.dumps(json_dict) + '\n')
@@ -99,7 +96,6 @@ def logging(json_dict):
 
 def main(argv):
 	global log, actions, ws
-	i = 0
 	log = 'log_files/obsticle_dist.txt' 
 	actions = {
 		'tf' : ('filter', 1)
@@ -113,10 +109,7 @@ def main(argv):
 		on_error = on_error,
 		on_close = on_close,
 		on_open = on_open)
-	print(i)
-	i += 1
 	ws.run_forever()
-	
 
 if __name__ == '__main__':
 	main(sys.argv)

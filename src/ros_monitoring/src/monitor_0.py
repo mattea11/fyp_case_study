@@ -8,6 +8,7 @@ from threading import *
 from rospy_message_converter import message_converter
 from ros_monitoring.msg import *
 from std_msgs.msg import String
+from msg import MonitorError
 
 ws_lock = Lock()
 

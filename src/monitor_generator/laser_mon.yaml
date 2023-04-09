@@ -10,8 +10,8 @@ nodes: # here we list the nodes we are going to monitor
 
 monitors: # here we list the monitors we are going to generate
   - monitor:
-      id: obsticle_dist
-      log: log_files/obsticle_dist.txt # file where the monitor will log the observed events
+      id: laserScan_mon
+      log: log_files/laserScan.txt # file where the monitor will log the observed events
       silent: False # we let the monitor to print info during its execution
       warning: 1 #we let the monitor to publish error content through monitor_error topic otherwise (for warning:0), monitor_error does not publish anything.
       oracle: # the oracle running and ready to check the specification (localhost in this case)
@@ -19,8 +19,8 @@ monitors: # here we list the monitors we are going to generate
         url: 127.0.0.1 # the url where it is listening
         action: nothing # the oracle will not change the message
       topics: # the list of topics this monitor is going to intercept
-        - name: tf # name of the topic
-          type: TFMessage #  std_msgs.msg.String # type of the topic
+        - name: merged_scan # name of the topic
+          type: LaserScan #  std_msgs.msg.String # type of the topic
           action: filter #
           publishers:
             - gazebo 

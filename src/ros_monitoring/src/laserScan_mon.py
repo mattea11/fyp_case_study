@@ -8,19 +8,21 @@ from threading import *
 from rospy_message_converter import message_converter
 from ros_monitoring.msg import *
 from std_msgs.msg import String
-# from msg.MonitorError import MonitorError
-from ros_monitoring.msg import MonitorError
+# sys.path.append("/home/mattea/curiosity_mars_rover_ws/src/ros_monitoring")
+# from ros_monitoring.msg import MonitorError
+
 
 ws_lock = Lock()
-dict_msgs = {} 
-from tf2_msgs.msg import TFMessage
+dict_msgs = {}
+# from sensor_msgs.LaserScan import LaserScan
+from sensor_msgs.msg import LaserScan
 
-pubtf = rospy.Publisher(name = 'tf', data_class = TFMessage, latch = True, queue_size = 1000)
-def callbacktf(data):
+pubmerged_scan = rospy.Publisher(name = 'merged_scan', data_class = LaserScan, latch = True, queue_size = 1000)
+def callbackmerged_scan(data):
 	global ws, ws_lock
 	rospy.loginfo('monitor has observed: ' + str(data))
 	dict = message_converter.convert_ros_message_to_dictionary(data)
-	dict['topic'] = 'tf'
+	dict['topic'] = 'merged_scan'
 	dict['time'] = rospy.get_time()
 	ws_lock.acquire()
 	while dict['time'] in dict_msgs:
@@ -29,16 +31,16 @@ def callbacktf(data):
 	dict_msgs[dict['time']] = data
 	ws_lock.release()
 	rospy.loginfo('event propagated to oracle')
-pub_dict = { 'tf' : pubtf}
-msg_dict = { 'tf' : "TFMessag/TFMessage"}
+pub_dict = { 'merged_scan' : pubmerged_scan}
+msg_dict = { 'merged_scan' : "sensor_msgs/LaserSca/sensor_msgs/LaserScan"}
 def monitor():
 	global pub_error, pub_verdict
 	with open(log, 'w') as log_file:
 		log_file.write('')
-	rospy.init_node('obsticle_dist', anonymous=True)
-	pub_error = rospy.Publisher(name = 'obsticle_dist/monitor_error', data_class = MonitorError, latch = True, queue_size = 1000)
-	pub_verdict = rospy.Publisher(name = 'obsticle_dist/monitor_verdict', data_class = String, latch = True, queue_size = 1000)
-	rospy.Subscriber('tf_mon', TFMessage, callbacktf)
+	rospy.init_node('laserScan_mon', anonymous=True)
+	pub_error = rospy.Publisher(name = 'laserScan_mon/monitor_error', data_class = MonitorError, latch = True, queue_size = 1000)
+	pub_verdict = rospy.Publisher(name = 'laserScan_mon/monitor_verdict', data_class = String, latch = True, queue_size = 1000)
+	rospy.Subscriber('merged_scan_mon', LaserScan, callbackmerged_scan)
 	rospy.loginfo('monitor started and ready')
 def on_message(ws, message):
 	global error, log, actions
@@ -59,6 +61,7 @@ def on_message(ws, message):
 		logging(json_dict)
 		if (json_dict['verdict'] == 'false' and actions[json_dict['topic']][1] >= 1) or (json_dict['verdict'] == 'currently_false' and actions[json_dict['topic']][1] == 1):
 			rospy.loginfo('The event ' + message + ' is inconsistent..')
+
 			error = MonitorError()
 			error.topic = json_dict['topic']
 			error.time = json_dict['time']
@@ -98,9 +101,9 @@ def logging(json_dict):
 
 def main(argv):
 	global log, actions, ws
-	log = 'log_files/obsticle_dist.txt' 
+	log = 'log_files/laserScan.txt' 
 	actions = {
-		'tf' : ('filter', 1)
+		'merged_scan' : ('filter', 1)
 	}
 	monitor()
 	websocket.enableTrace(False)

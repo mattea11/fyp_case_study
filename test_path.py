@@ -85,4 +85,3 @@ if __name__ == '__main__':
     # Print the final position and rotation of the robot
     print("Final position: ({}, {})".format(tester.final_pos[0], tester.final_pos[1]))
     print("Final rotation: {}".format(tester.final_rot[2]))
-

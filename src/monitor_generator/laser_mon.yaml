@@ -21,7 +21,7 @@ monitors: # here we list the monitors we are going to generate
       topics: # the list of topics this monitor is going to intercept
         - name: merged_scan # name of the topic
           type: LaserScan #  std_msgs.msg.String # type of the topic
-          action: filter #
+          action: log #
           publishers:
             - gazebo 
             # - move_base #

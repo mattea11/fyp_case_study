@@ -11,10 +11,9 @@ from std_msgs.msg import String
 
 ws_lock = Lock()
 dict_msgs = {}
-from tf2_msgs.msg import TFMessage
+from TFMessage import TFMessage
 
 pubtf = rospy.Publisher(name = 'tf', data_class = TFMessage, latch = True, queue_size = 1000)
-
 def callbacktf(data):
 	global ws, ws_lock
 	rospy.loginfo('monitor has observed: ' + str(data))
@@ -27,17 +26,13 @@ def callbacktf(data):
 	ws.send(json.dumps(dict))
 	dict_msgs[dict['time']] = data
 	ws_lock.release()
-	with open(log, 'a') as log_file:
-		log_file.write('from callback ' + json.dumps(dict) + '\n')
 	rospy.loginfo('event propagated to oracle')
 pub_dict = { 'tf' : pubtf}
-msg_dict = { 'tf' : "TFMessage/TFMessage"}
-
+msg_dict = { 'tf' : "TFMessag/TFMessage"}
 def monitor():
 	global pub_error, pub_verdict
-
 	with open(log, 'w') as log_file:
-		log_file.write('from mon \n')
+		log_file.write('')
 	rospy.init_node('obsticle_dist', anonymous=True)
 	# pub_error = rospy.Publisher(name = 'obsticle_dist/monitor_error', data_class = MonitorError, latch = True, queue_size = 1000)
 	pub_verdict = rospy.Publisher(name = 'obsticle_dist/monitor_verdict', data_class = String, latch = True, queue_size = 1000)
@@ -101,16 +96,12 @@ def logging(json_dict):
 
 def main(argv):
 	global log, actions, ws
-	print('lol')
 	log = 'log_files/obsticle_dist.txt' 
 	actions = {
-		'tf' : ('log', 1)
+		'tf' : ('filter', 1)
 	}
-	print('set log and action')
 	monitor()
-	print('monitor done')
 	websocket.enableTrace(False)
-	print('enavle trace')
 	ws = websocket.WebSocketApp(
 		'ws://127.0.0.1:9090',
 		on_message = on_message,
@@ -118,9 +109,7 @@ def main(argv):
 		on_error = on_error,
 		on_close = on_close,
 		on_open = on_open)
-	print('start loop')
 	ws.run_forever()
-	print('loop')
 
 if __name__ == '__main__':
 	main(sys.argv)

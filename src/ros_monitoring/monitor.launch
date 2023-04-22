@@ -1,7 +1,7 @@
 
 <launch>
         
-<node pkg="monitor" type="laserScan_mon.py" name="laserScan_mon" output="screen"/>
+<node pkg="monitor" type="obsticle_dist.py" name="obsticle_dist" output="screen"/>
             
 </launch>
         

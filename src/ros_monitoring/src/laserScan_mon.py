@@ -8,13 +8,9 @@ from threading import *
 from rospy_message_converter import message_converter
 from ros_monitoring.msg import *
 from std_msgs.msg import String
-# sys.path.append("/home/mattea/curiosity_mars_rover_ws/src/ros_monitoring")
-# from ros_monitoring.msg import MonitorError
-
 
 ws_lock = Lock()
 dict_msgs = {}
-# from sensor_msgs.LaserScan import LaserScan
 from sensor_msgs.msg import LaserScan
 
 pubmerged_scan = rospy.Publisher(name = 'merged_scan', data_class = LaserScan, latch = True, queue_size = 1000)
@@ -32,13 +28,13 @@ def callbackmerged_scan(data):
 	ws_lock.release()
 	rospy.loginfo('event propagated to oracle')
 pub_dict = { 'merged_scan' : pubmerged_scan}
-msg_dict = { 'merged_scan' : "sensor_msgs/LaserSca/sensor_msgs/LaserScan"}
+msg_dict = { 'merged_scan' : "LaserSca/LaserScan"}
 def monitor():
 	global pub_error, pub_verdict
 	with open(log, 'w') as log_file:
 		log_file.write('')
 	rospy.init_node('laserScan_mon', anonymous=True)
-	pub_error = rospy.Publisher(name = 'laserScan_mon/monitor_error', data_class = MonitorError, latch = True, queue_size = 1000)
+	# pub_error = rospy.Publisher(name = 'laserScan_mon/monitor_error', data_class = MonitorError, latch = True, queue_size = 1000)
 	pub_verdict = rospy.Publisher(name = 'laserScan_mon/monitor_verdict', data_class = String, latch = True, queue_size = 1000)
 	rospy.Subscriber('merged_scan_mon', LaserScan, callbackmerged_scan)
 	rospy.loginfo('monitor started and ready')
@@ -61,8 +57,7 @@ def on_message(ws, message):
 		logging(json_dict)
 		if (json_dict['verdict'] == 'false' and actions[json_dict['topic']][1] >= 1) or (json_dict['verdict'] == 'currently_false' and actions[json_dict['topic']][1] == 1):
 			rospy.loginfo('The event ' + message + ' is inconsistent..')
-
-			error = MonitorError()
+			# error = MonitorError()
 			error.topic = json_dict['topic']
 			error.time = json_dict['time']
 			error.property = json_dict['spec']
@@ -103,7 +98,7 @@ def main(argv):
 	global log, actions, ws
 	log = 'log_files/laserScan.txt' 
 	actions = {
-		'merged_scan' : ('filter', 1)
+		'merged_scan' : ('log', 1)
 	}
 	monitor()
 	websocket.enableTrace(False)

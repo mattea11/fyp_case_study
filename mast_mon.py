@@ -1,4 +1,4 @@
-# get the mast angle
+
 import rospy
 from control_msgs.msg import JointControllerState
 
@@ -9,10 +9,8 @@ def callback(data):
 def listener():
     # Initialize the node
     rospy.init_node('arm_position_listener', anonymous=True)
-
     # Subscribe to the topic
     rospy.Subscriber("/curiosity_mars_rover/arm_01_joint_position_controller/state", JointControllerState, callback)
-
     # Spin until shutdown
     rospy.spin()
 

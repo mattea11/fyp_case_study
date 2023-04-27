@@ -1,26 +1,3 @@
-# import sys
-
-# def lol():
-#     try :
-#         with open('./src/curiosity_mars_rover_navigation/scripts/move_rover.txt', 'r') as path_to_take:
-#             for command in path_to_take:
-#                 print(command.strip())
-#     except FileNotFoundError:
-#         print("Error: file not found!")
-#         sys.exit(1)
-
-
-# lol()
-
-#!/usr/bin/env python3
-
-# Navigation tester that sends random goals, waits for a result message and
-# compares the final rover position with the goal position originally sent.
-  
-# Decorator for asynchronous testing, borrowed from:
-# https://stackoverflow.com/questions/23033939/how-to-test-python-3-4-asyncio-code
-
-
 import random
 import rospy
 import tf

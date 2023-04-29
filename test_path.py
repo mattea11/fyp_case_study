@@ -1,15 +1,14 @@
 import random
 import rospy
 import tf
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped, Twist
 from move_base_msgs.msg import MoveBaseActionResult
+from joint_state_controller import JointStateController
 from tf.transformations import *
 
-# ./src/ros_monitoring/src/obsticle_dist.py
-
 class NavigationPublishAndWait:
-    def __init__(self):
-        self.pub = rospy.Publisher('/move_base_simple/goal', PoseStamped, queue_size=10)
+    def __init__(self): 
+        self.pub = rospy.Publisher('/move_base_simple/goal', PoseStamped, queue_size=10) 
         rospy.Subscriber('/move_base/result', MoveBaseActionResult, self.callback_result)
         rospy.init_node('test_nav_node', anonymous=True)
         rospy.sleep(1)
@@ -20,8 +19,9 @@ class NavigationPublishAndWait:
         self.final_x = 1000
         self.final_y = 1000
         self.final_rot = 10
+        self.speed = 0
 
-    def send_goal(self, x, y, rot):
+    def   send_goal(self, x, y, rot, speed):  
         # Send a simple navigation goal to the action server
         pose = PoseStamped()
         pose.header.frame_id = "odom"
@@ -36,6 +36,10 @@ class NavigationPublishAndWait:
         pose.pose.orientation.z = quaternion[2]
         pose.pose.orientation.w = quaternion[3]
         self.pub.publish(pose)
+
+        # Send a velocity command to control the speed of the robot
+        vel_cmd = Twist()
+        vel_cmd.linear.x = speed
 
     def wait_for_result(self):
         # Wait for callback_result to be called
@@ -53,10 +57,12 @@ if __name__ == '__main__':
     tester = NavigationPublishAndWait()
 
     # Send a random navigation goal and wait for result
+    
     random_x = round(random.uniform(-10, 10), 2) 
     random_y = round(random.uniform(-10, 10), 2)
     random_rot = round(random.uniform(-3.14, 3.14), 2)
-    tester.send_goal(random_x, random_y, random_rot)
+    speed = 0.5
+    tester.send_goal(random_x, random_y, random_rot, speed)
     tester.wait_for_result()
 
     # Print the final position and rotation of the robot

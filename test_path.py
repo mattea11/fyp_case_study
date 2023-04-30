@@ -3,12 +3,13 @@ import rospy
 import tf
 from geometry_msgs.msg import PoseStamped, Twist
 from move_base_msgs.msg import MoveBaseActionResult
-from joint_state_controller import JointStateController
+
 from tf.transformations import *
 
 class NavigationPublishAndWait:
     def __init__(self): 
         self.pub = rospy.Publisher('/move_base_simple/goal', PoseStamped, queue_size=10) 
+        # pub = rospy.Publisher('/curiosity_mars_rover/ackermann_drive_controller/cmd_vel', Twist, queue_size=10)
         rospy.Subscriber('/move_base/result', MoveBaseActionResult, self.callback_result)
         rospy.init_node('test_nav_node', anonymous=True)
         rospy.sleep(1)

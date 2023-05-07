@@ -1,10 +1,11 @@
-from larva_client import larva_client
-from ros_mon import ros_mon_listener
+from create_json import create_json
+from ros_mon import ros_mon
 
 import socket
 import json
+import time
 
-if __name__ == '__main__':
+if __name__ == '__main__':  
 
     # start_client()
     HOST = "192.168.4.21"
@@ -13,25 +14,68 @@ if __name__ == '__main__':
     # Create a TCP socket and connect to the server
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect((HOST, PORT))
+    print('connected to the Larva server!')
 
-    # Receive a response from the server
-    data = client_socket.recv(1024)
-    print('Received from server: ', data.decode())
+    # send command and check validity
+    curr_data = ros_mon.get_latest_arm_vert()
+    print("test curr data: ", curr_data)
+    change_data = create_json.change_vert(-1.03)
+    to_send = create_json.merge_json(curr_data, change_data)
+    print("sending command: ", to_send)
+    create_json.send_data_to_larva(client_socket, to_send)
+    print('sent11111111111111')
 
-    # message = '{"mast_angle_horiz": 0}'
+    #do not send next command before larva says so
+    while True:
+        data = client_socket.recv(1024)
+        if "move on" in data.decode():
+            print("Received message: ", data.decode())
+            break
 
-    # larva_client.send_data_to_larva(client_socket, message)
+    curr_data = ros_mon.get_latest_arm_vert()
+    # print("test curr data: ", curr_data)
+    change_data = create_json.change_vert(-0.1)
+    to_send = create_json.merge_json(curr_data, change_data)
+    print("sending command: ", to_send)
+    create_json.send_data_to_larva(client_socket, to_send)
+    print('sent11111111111111')
 
-    # # ros_mon_listener()
+    while True:
+        data = client_socket.recv(1024)
+        if "move on" in data.decode():
+            print("Received message: ", data.decode())
+            break
 
-    # message = '{"mast_angle_vert": 1}'
+    end_prog = create_json.create_gen_msg('end program', -1)
+    print(end_prog)
+    create_json.send_data_to_larva(client_socket, to_send)
+    print('bye')
+    ##########
 
-    # larva_client.send_data_to_larva(client_socket, message)
+    #send command and check validity
+    # curr_data = ros_mon.get_latest_speed()
+    # # print("test curr data: ", curr_data)
+    # change_data = create_json.change_speed(27)
+    # to_send = create_json.merge_json(curr_data, change_data)
+    # print("sending command: ", to_send)
+    # create_json.send_data_to_larva(client_socket, to_send)
+    # print('sent11111111111111')
 
-    # collect data using ros_mon_listener
-    collected_data = {}
-    ros_mon_listener(collected_data)
+    # #do not send next command before larva says so
+    # while True:
+    #     data = client_socket.recv(1024)
+    #     if "move on" in data.decode():
+    #         print("Received message: ", data.decode())
+    #         break
 
-    # send collected data to server
-    merged_json = larva_client.merge_json(json.dumps(collected_data))
-    larva_client.send_data_to_larva(client_socket, merged_json)
+    # curr_data = ros_mon.get_latest_speed()
+    # change_data = create_json.change_speed(0.4)
+    # to_send = create_json.merge_json(curr_data, change_data)
+    # print("sending command: ", to_send)
+    # create_json.send_data_to_larva(client_socket, to_send)
+    # print('sent22222222222222222222222222')
+
+    # end_prog = create_json.create_gen_msg('end program', -1)
+    # print(end_prog)
+    # create_json.send_data_to_larva(client_socket, to_send)
+    # print('bye')

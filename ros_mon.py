@@ -12,17 +12,23 @@ import json
 
 class ros_mon:
 
-    curr_speed = None
-    curr_dist = None
-    curr_arm_horiz = None
-    curr_arm_vert = None
-
-    def get_latest_dist(): # fix !!!!!!!!!!!!!
+    def get_obj_orient(): # fix !!!!!!!!!!!!!
         def callback(scan_data):
             cd = scan_data.ranges
             return cd
         curr_dist = rospy.Subscriber('/curiosity_mars_rover/camera_fronthazcam/scan', LaserScan, callback)
         return curr_dist
+
+
+
+
+
+
+
+
+
+
+
 
     def get_latest_speed():
         rospy.init_node('rover_speed_node')

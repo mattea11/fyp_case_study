@@ -34,6 +34,7 @@ class NavigationPublishAndWait:
         pose.pose.orientation.y = 0
         # Convert random rotation in radians to quaternion
         quaternion = quaternion_from_euler(0, 0, rot)
+        
         pose.pose.orientation.z = quaternion[2]
         pose.pose.orientation.w = quaternion[3]
         self.pub.publish(pose)
@@ -63,8 +64,14 @@ if __name__ == '__main__':
     random_y = round(random.uniform(-10, 10), 2)
     random_rot = round(random.uniform(-3.14, 3.14), 2)
     speed = 0.5
+    print('x: ', random_x)
+    print('y: ', random_y)
+    print('rot: ', random_rot)
+
     tester.send_goal(random_x, random_y, random_rot, speed)
+    print('hello')
     tester.wait_for_result()
+    print('done')
 
     # Print the final position and rotation of the robot
     print("Final position: ({}, {})".format(tester.final_pos[0], tester.final_pos[1]))

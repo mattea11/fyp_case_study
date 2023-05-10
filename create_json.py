@@ -7,6 +7,16 @@ import socket
 
 class create_json:
 
+    def change_nav( x, y, z):
+        data = {
+            "chnage_nav": {
+                "x": x,
+                "y": y,
+                "z": z
+            }
+        }
+        return json.dumps(data)
+
     def change_speed(speed):
         my_dict = {'change_speed': speed}
         json_object = json.dumps(my_dict)
@@ -22,6 +32,11 @@ class create_json:
         json_object = json.dumps(my_dict)
         return json_object
     
+    def curr_obj_orient(orientation):
+        my_dict = {'curr_obj_orientation': orientation}
+        json_object = json.dumps(my_dict)
+        return json_object
+
     def curr_speed(speed):
         my_dict = {'curr_speed': speed}
         json_object = json.dumps(my_dict)

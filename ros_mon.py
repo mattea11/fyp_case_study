@@ -2,7 +2,7 @@
 
 import rospy
 from nav_msgs.msg import Odometry
-from sensor_msgs.msg import LaserScan, Image, CameraInfo
+from sensor_msgs.msg import LaserScan, LaserScan, Image, CameraInfo
 from control_msgs.msg import JointControllerState
 from geometry_msgs.msg import PoseStamped, Twist
 from cv_bridge import CvBridge
@@ -11,24 +11,17 @@ import cv2
 import json
 
 class ros_mon:
+    
+    def get_latest_distance():
+        rospy.init_node('rover_distance_node')
+        data = rospy.wait_for_message('/merged_scan', LaserScan)
 
-    def get_obj_orient(): # fix !!!!!!!!!!!!!
-        def callback(scan_data):
-            cd = scan_data.ranges
-            return cd
-        curr_dist = rospy.Subscriber('/curiosity_mars_rover/camera_fronthazcam/scan', LaserScan, callback)
-        return curr_dist
+        dist = data.ranges
+        dist = f"{dist:.3f}"
 
-
-
-
-
-
-
-
-
-
-
+        my_dict = {'curr_distances': dist}
+        json_speed = json.dumps(my_dict)
+        return json_speed
 
     def get_latest_speed():
         rospy.init_node('rover_speed_node')
@@ -57,7 +50,7 @@ class ros_mon:
         data = rospy.wait_for_message('/curiosity_mars_rover/mast_cameras_joint_position_controller/state', JointControllerState)
 
         angle = data.process_value
-        angle = angle #* 180.0 / 3.14
+        angle = angle
 
         my_dict = {'curr_vert_ang': angle}
         json_angle = json.dumps(my_dict)

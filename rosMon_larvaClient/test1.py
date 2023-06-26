@@ -20,7 +20,7 @@ if __name__ == '__main__':
         client_socket.connect((HOST, PORT))
         print('Connected to the Larva server!')
 
-        with open('./command_validation.txt', 'w') as file:
+        with open('./command_validation_time.txt', 'w') as file:
             #create node to be used for all monitors
             r = ros_mon()
 
@@ -51,7 +51,7 @@ if __name__ == '__main__':
             curr_speed = r.get_latest_speed()
             curr_dist = r.get_latest_distance()
             change_nav = create_json.change_nav(1, 0 , 0, 1)
-            change_speed = create_json.change_speed(1)
+            change_speed = create_json.change_speed(0.01)
             to_send = create_json.merge_json(curr_speed, curr_dist)
             to_send = create_json.merge_json(to_send, change_speed)
             to_send = create_json.merge_json(to_send, change_nav)
@@ -60,7 +60,6 @@ if __name__ == '__main__':
             start_time = time.time()
             print('sent')
 
-            # i = 0
             while True:
                 data = client_socket.recv(1024)
                 if "valid move on" in data.decode():
@@ -80,7 +79,7 @@ if __name__ == '__main__':
             curr_speed = r.get_latest_speed()
             curr_dist = r.get_latest_distance()
             change_nav = create_json.change_nav(1, 0 , 0.71, 0.71)
-            change_speed = create_json.change_speed(1)
+            change_speed = create_json.change_speed(0.1)
             to_send = create_json.merge_json(curr_speed, curr_dist)
             to_send = create_json.merge_json(to_send, change_speed)
             to_send = create_json.merge_json(to_send, change_nav)
@@ -89,7 +88,6 @@ if __name__ == '__main__':
             start_time = time.time()
             print('sent')
 
-            # i = 0
             while True:
                 data = client_socket.recv(1024)
                 if "valid move on" in data.decode():
@@ -105,12 +103,11 @@ if __name__ == '__main__':
                     print('invalid ', time_taken)
                     file.write(f"{time_taken}\n")
                     break
-            # time.sleep(5)
 
             curr_speed = r.get_latest_speed()
             curr_dist = r.get_latest_distance()
             change_nav = create_json.change_nav(2, 0 , 0, -3.14)
-            change_speed = create_json.change_speed(2)
+            change_speed = create_json.change_speed(0.15)
             to_send = create_json.merge_json(curr_speed, curr_dist)
             to_send = create_json.merge_json(to_send, change_speed)
             to_send = create_json.merge_json(to_send, change_nav)
@@ -118,7 +115,6 @@ if __name__ == '__main__':
             create_json.send_data_to_larva(client_socket, to_send)
             print('sent')
 
-            # i = 0
             while True:
                 data = client_socket.recv(1024)
                 if "valid move on" in data.decode():
@@ -162,7 +158,7 @@ if __name__ == '__main__':
             curr_speed = r.get_latest_speed()
             curr_dist = r.get_latest_distance()
             change_nav = create_json.change_nav(2, 0 , 0, 1)
-            change_speed = create_json.change_speed(2)
+            change_speed = create_json.change_speed(0.02)
             to_send = create_json.merge_json(curr_speed, curr_dist)
             to_send = create_json.merge_json(to_send, change_speed)
             to_send = create_json.merge_json(to_send, change_nav)
@@ -186,12 +182,11 @@ if __name__ == '__main__':
                     print('invalid ', time_taken)
                     file.write(f"{time_taken}\n")
                     break
-            # time.sleep(5)
 
             curr_speed = r.get_latest_speed()
             curr_dist = r.get_latest_distance()
             change_nav = create_json.change_nav(1, 0 , 0, 1)
-            change_speed = create_json.change_speed(2)
+            change_speed = create_json.change_speed(0.21)
             to_send = create_json.merge_json(curr_speed, curr_dist)
             to_send = create_json.merge_json(to_send, change_speed)
             to_send = create_json.merge_json(to_send, change_nav)
@@ -199,7 +194,6 @@ if __name__ == '__main__':
             create_json.send_data_to_larva(client_socket, to_send)
             print('sent')
 
-            # i = 0
             while True:
                 data = client_socket.recv(1024)
                 if "valid move on" in data.decode():
@@ -215,12 +209,11 @@ if __name__ == '__main__':
                     print('invalid ', time_taken)
                     file.write(f"{time_taken}\n")
                     break
-            # time.sleep(5)
 
             curr_speed = r.get_latest_speed()
             curr_dist = r.get_latest_distance()
             change_nav = create_json.change_nav(1, 0 , 0.71, 0.71)
-            change_speed = create_json.change_speed(1)
+            change_speed = create_json.change_speed(0.03)
             to_send = create_json.merge_json(curr_speed, curr_dist)
             to_send = create_json.merge_json(to_send, change_speed)
             to_send = create_json.merge_json(to_send, change_nav)
@@ -229,7 +222,6 @@ if __name__ == '__main__':
             start_time = time.time()
             print('sent')
 
-            # i = 0
             while True:
                 data = client_socket.recv(1024)
                 if "valid move on" in data.decode():
@@ -245,12 +237,11 @@ if __name__ == '__main__':
                     print('invalid ', time_taken)
                     file.write(f"{time_taken}\n")
                     break
-            # time.sleep(5)
 
             curr_speed = r.get_latest_speed()
             curr_dist = r.get_latest_distance()
             change_nav = create_json.change_nav(2, 0 , 0, 1)
-            change_speed = create_json.change_speed(1.5)
+            change_speed = create_json.change_speed(0.05)
             to_send = create_json.merge_json(curr_speed, curr_dist)
             to_send = create_json.merge_json(to_send, change_speed)
             to_send = create_json.merge_json(to_send, change_nav)
@@ -287,8 +278,6 @@ if __name__ == '__main__':
 
             # i = 0
             while True:
-                # curr_angle = float(json.loads(r.get_latest_arm_vert())['curr_vert_ang'])
-                # print('CURR VAL', curr_angle)
                 data = client_socket.recv(1024)
                 if "valid move on" in data.decode():
                     end_time = time.time()
@@ -306,7 +295,7 @@ if __name__ == '__main__':
             curr_speed = r.get_latest_speed()
             curr_dist = r.get_latest_distance()
             change_nav = create_json.change_nav(2, 0 , 0, 1)
-            change_speed = create_json.change_speed(2.5)
+            change_speed = create_json.change_speed(0.02)
             to_send = create_json.merge_json(curr_speed, curr_dist)
             to_send = create_json.merge_json(to_send, change_speed)
             to_send = create_json.merge_json(to_send, change_nav)

@@ -11,7 +11,8 @@ class ros_mon:
         rospy.init_node('rover_mon_node', anonymous=True)
 
 
-    #each of the following functions collects data for their respective property at the time and create a json object of the information
+    # each of the following functions collects data for their respective property at the time and 
+    # create a json object of the information
     def get_latest_distance(self):
         data = rospy.wait_for_message('/merged_scan', LaserScan)
 

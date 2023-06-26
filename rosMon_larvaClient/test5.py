@@ -49,7 +49,7 @@ if __name__ == '__main__':
             curr_speed = r.get_latest_speed()
             curr_dist = r.get_latest_distance()
             change_nav = create_json.change_nav(2, 0 , 0.71, 0.71)
-            change_speed = create_json.change_speed(3)
+            change_speed = create_json.change_speed(0.3)
             to_send = create_json.merge_json(curr_speed, curr_dist)
             to_send = create_json.merge_json(to_send, change_speed)
             to_send = create_json.merge_json(to_send, change_nav)
@@ -76,7 +76,7 @@ if __name__ == '__main__':
             
             
             curr_data = r.get_latest_arm_vert()
-            val = 0.02
+            val = -0.02
             change_data = create_json.change_vert(val)
             to_send = create_json.merge_json(curr_data, change_data)
             print("Sending command:\n ", to_send)
@@ -103,7 +103,7 @@ if __name__ == '__main__':
             curr_speed = r.get_latest_speed()
             curr_dist = r.get_latest_distance()
             change_nav = create_json.change_nav(1, 0 , 0.71, 0.71)
-            change_speed = create_json.change_speed(1.5)
+            change_speed = create_json.change_speed(0.15)
             to_send = create_json.merge_json(curr_speed, curr_dist)
             to_send = create_json.merge_json(to_send, change_speed)
             to_send = create_json.merge_json(to_send, change_nav)
@@ -130,7 +130,7 @@ if __name__ == '__main__':
 
             curr_speed = r.get_latest_speed()
             curr_dist = r.get_latest_distance()
-            change_nav = create_json.change_nav(2.5, 5.2 , 0.71, 0.71)
+            change_nav = create_json.change_nav(2.5, 2 , -0.71, -0.71)
             change_speed = create_json.change_speed(2)
             to_send = create_json.merge_json(curr_speed, curr_dist)
             to_send = create_json.merge_json(to_send, change_speed)
@@ -156,7 +156,7 @@ if __name__ == '__main__':
                     break
             
             curr_data = r.get_latest_arm_vert()
-            val = -0.1
+            val = 0.0
             change_data = create_json.change_vert(val)
             to_send = create_json.merge_json(curr_data, change_data)
             print("Sending command:\n ", to_send)
@@ -181,8 +181,8 @@ if __name__ == '__main__':
 
             curr_speed = r.get_latest_speed()
             curr_dist = r.get_latest_distance()
-            change_nav = create_json.change_nav(2, 0 , 0, 1)
-            change_speed = create_json.change_speed(7)
+            change_nav = create_json.change_nav(1.5, 0 , 0, 1)
+            change_speed = create_json.change_speed(0.4)
             to_send = create_json.merge_json(curr_speed, curr_dist)
             to_send = create_json.merge_json(to_send, change_speed)
             to_send = create_json.merge_json(to_send, change_nav)
@@ -209,7 +209,7 @@ if __name__ == '__main__':
 
             curr_speed = r.get_latest_speed()
             curr_dist = r.get_latest_distance()
-            change_nav = create_json.change_nav(2.5, 1 , 0.71, 0.71)
+            change_nav = create_json.change_nav(7, 0 , 0,1)
             change_speed = create_json.change_speed(2)
             to_send = create_json.merge_json(curr_speed, curr_dist)
             to_send = create_json.merge_json(to_send, change_speed)
@@ -262,7 +262,7 @@ if __name__ == '__main__':
             curr_speed = r.get_latest_speed()
             curr_dist = r.get_latest_distance()
             change_nav = create_json.change_nav(1.5, 0 , 0, 1)
-            change_speed = create_json.change_speed(4)
+            change_speed = create_json.change_speed(0.4)
             to_send = create_json.merge_json(curr_speed, curr_dist)
             to_send = create_json.merge_json(to_send, change_speed)
             to_send = create_json.merge_json(to_send, change_nav)
@@ -290,7 +290,7 @@ if __name__ == '__main__':
             curr_speed = r.get_latest_speed()
             curr_dist = r.get_latest_distance()
             change_nav = create_json.change_nav(7, 0 , 0, 1)
-            change_speed = create_json.change_speed(2)
+            change_speed = create_json.change_speed(0.2)
             to_send = create_json.merge_json(curr_speed, curr_dist)
             to_send = create_json.merge_json(to_send, change_speed)
             to_send = create_json.merge_json(to_send, change_nav)
